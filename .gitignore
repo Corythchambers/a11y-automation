@@ -1,2 +1,12 @@
-node_modules
-dist
+# Ignore dependencies and build artifacts
+node_modules/
+dist/
+coverage/  
+*.log           
+.npm/           
+.npmrc        
+.yarn/          
+.vscode/       
+.idea/          
+.DS_Store       
+.env       
