@@ -18,4 +18,7 @@ export default [
       "no-undef": "off",
     },
   },
+  {
+    ignores: ["node_modules/", "dist/"],
+  },
 ];
