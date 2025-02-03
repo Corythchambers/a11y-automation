@@ -4,11 +4,12 @@ import { Page } from "playwright";
  * Extracts all unique internal links from a page.
  */
 export async function extractLinks(page: Page, baseUrl: string): Promise<Set<string>> {
+  const domain = new URL(baseUrl).origin;
   const links = await page.$$eval("a[href]", (anchors) =>
     anchors.map((a) => (a as HTMLAnchorElement).href),
   );
 
-  const domain = new URL(baseUrl).origin;
+
   return new Set(
     links
       .map((link) => {
@@ -21,4 +22,14 @@ export async function extractLinks(page: Page, baseUrl: string): Promise<Set<str
       })
       .filter(Boolean) as string[],
   );
+}
+
+function normalizeUrl(url: string): string {
+  try {
+    const urlObj = new URL(url);
+    urlObj.search = ""
+    return urlObj.origin + urlObj.pathname
+  } catch (e) {
+    return url
+  }
 }

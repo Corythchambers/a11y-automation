@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border: 1px solid #ddd; }
+        th { background-color: #f4f4f4; cursor: pointer; }
+        .hidden-row { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Accessibility Report</h1>
+    <table id="reportTable">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">URL</th>
+                <th onclick="sortTable(1)">Violation Type</th>
+                <th onclick="sortTable(2)">Message</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{TABLE_ROWS}}
+        </tbody>
+    </table>
+
+    <script>
+        function toggleDetails(rowId) {
+            const detailsRow = document.getElementById(rowId);
+            if (detailsRow.style.display === "none" || detailsRow.style.display === "") {
+                detailsRow.style.display = "table-row";
+            } else {
+                detailsRow.style.display = "none";
+            }
+        }
+
+        function sortTable(columnIndex) {
+            const table = document.getElementById("reportTable");
+            const rows = Array.from(table.querySelectorAll("tbody tr:not(.hidden-row)"));
+            const isAscending = table.getAttribute("data-sort") === "asc";
+            const direction = isAscending ? 1 : -1;
+
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.cells[columnIndex].textContent.trim().toLowerCase();
+                const cellB = rowB.cells[columnIndex].textContent.trim().toLowerCase();
+                return cellA.localeCompare(cellB) * direction;
+            });
+
+            table.tBodies[0].append(...rows);
+            table.setAttribute("data-sort", isAscending ? "desc" : "asc");
+        }
+    </script>
+</body>
+</html>
